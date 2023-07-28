@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double _maxRetries = 1;
+  double _maxRetries = 0.0;
   bool _isDeviceSecured = true;
 
   final _methodChannel = CustomMethodChannelController();

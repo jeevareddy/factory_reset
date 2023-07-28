@@ -31,32 +31,40 @@ class MainActivity : FlutterActivity() {
         mDPM = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         mDeviceAdminComponentName = ComponentName(this, DeviceAdmin::class.java)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
-                call,
-                result ->
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            CHANNEL
+        ).setMethodCallHandler { call,
+                                 result ->
             Log.d(TAG, "Method Call Name: ${call.method}")
             try {
                 when (call.method) {
                     "isDeviceSecured" -> {
                         val deviceStatus = isDeviceSecured()
                         result.success(deviceStatus)
-                    }"setMaxPasswordRetries" -> {
+                    }
+
+                    "setMaxPasswordRetries" -> {
                         val maxRetries = call.argument("maxRetries") as Int?
                         setMaxFailedPasswordsForWipe(maxRetries)
                         result.success(true)
                     }
+
                     "getMaxPasswordRetries" -> {
                         val currentMaxRetries = getMaxFailedPasswordsForWipe()
                         result.success(currentMaxRetries)
                     }
+
                     "enablePermission" -> {
                         enablePermission()
                         result.success(true)
                     }
+
                     "reset" -> {
                         reset()
                         result.success(true)
                     }
+
                     else -> {
                         result.notImplemented()
                     }
@@ -78,13 +86,13 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun setMaxFailedPasswordsForWipe(retries: Int?) {
-        if(retries==null || retries<=0) return
+        if (retries == null || retries <= 0) return
         enablePermission()
         mDPM.setMaximumFailedPasswordsForWipe(mDeviceAdminComponentName, retries)
     }
 
     private fun getMaxFailedPasswordsForWipe(): Int {
-        enablePermission()
+//        enablePermission()
         return mDPM.getMaximumFailedPasswordsForWipe(mDeviceAdminComponentName)
     }
 
@@ -96,8 +104,8 @@ class MainActivity : FlutterActivity() {
                 val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdminComponentName)
                 intent.putExtra(
-                        DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                        "Process will remove user installed applications, settings, wallpaper and sound settings. Are you sure you want to wipe device?"
+                    DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                    "Process will remove user installed applications, settings, wallpaper and sound settings. Are you sure you want to wipe device?"
                 )
                 startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN)
             }
@@ -121,12 +129,12 @@ class MainActivity : FlutterActivity() {
             // 2.1
             try {
                 val foreignContext =
-                        createPackageContext(
-                                "com.android.settings",
-                                CONTEXT_IGNORE_SECURITY or CONTEXT_INCLUDE_CODE
-                        )
+                    createPackageContext(
+                        "com.android.settings",
+                        CONTEXT_IGNORE_SECURITY or CONTEXT_INCLUDE_CODE
+                    )
                 val yourClass =
-                        foreignContext.classLoader.loadClass("com.android.settings.MasterClear")
+                    foreignContext.classLoader.loadClass("com.android.settings.MasterClear")
                 val i = Intent(foreignContext, yourClass)
                 startActivityForResult(i, REQUEST_CODE_ENABLE_ADMIN)
             } catch (e: ClassNotFoundException) {
@@ -141,11 +149,11 @@ class MainActivity : FlutterActivity() {
         if (requestCode == REQUEST_CODE_ENABLE_ADMIN) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(
-                                context,
-                                context.getString(R.string.admin_receiver_status_enabled),
-                                Toast.LENGTH_SHORT
-                        )
-                        .show()
+                    context,
+                    context.getString(R.string.admin_receiver_status_enabled),
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
             } else {
                 Toast.makeText(context, "Admin Request denied.", Toast.LENGTH_SHORT).show()
             }
@@ -162,11 +170,11 @@ class DeviceAdmin : DeviceAdminReceiver() {
     }
 
     override fun onEnabled(context: Context, intent: Intent) =
-            showToast(context, context.getString(R.string.admin_receiver_status_enabled))
+        showToast(context, context.getString(R.string.admin_receiver_status_enabled))
 
     override fun onDisableRequested(context: Context, intent: Intent): CharSequence =
-            context.getString(R.string.admin_receiver_status_disable_warning)
+        context.getString(R.string.admin_receiver_status_disable_warning)
 
     override fun onDisabled(context: Context, intent: Intent) =
-            showToast(context, context.getString(R.string.admin_receiver_status_disable_warning))
+        showToast(context, context.getString(R.string.admin_receiver_status_disable_warning))
 }
