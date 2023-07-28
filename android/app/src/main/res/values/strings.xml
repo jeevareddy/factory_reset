@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_admin_label">Factory Reset Demo Application</string>
+    <string name="device_admin_description">Allow Factory Reset Demo Application securely wipe the device.</string>
+    <string name="admin_receiver_status">Admin Receiver Status</string>
+    <string name="admin_receiver_status_enabled">Admin Access Enabled</string>
+    <string name="admin_receiver_status_disable_warning">Are you sure to disabled Factory Reset Demo Application\'s access to wipe your device?</string>
+</resources>
