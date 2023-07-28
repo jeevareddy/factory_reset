@@ -1,16 +1,10 @@
 # factory_reset
 
-A new Flutter project.
+A demo application to wipe device data by factory reset.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is a demo implementing Android Admin Device Policy Manger with Flutter Method Channel.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For help getting started with Android Device Policy, view the
+[online documentation](https://developer.android.com/reference/android/app/admin/DevicePolicyManager/), which offers code samples and a full API reference.
